@@ -11,11 +11,11 @@ cassandra-1:
   image: cassandra:latest
   command: /bin/bash -c "sleep 1 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
   expose:
-    - "10000:7000"
-    - "10001:7001"
-    - "10199:7199"
-    - "10042:9042"
-    - "10160:9160"
+    - 7000
+    - 7001
+    - 7199
+    - 9042
+    - 9160
   # volumes: # uncomment if you desire mounts, also uncomment cluster.sh
   #   - ./data/cassandra-1:/var/lib/cassandra:rw
 
@@ -28,10 +28,10 @@ cassandra-2:
   links:
     - cassandra-1
   expose:
-    - "11000:7000"
-    - "11001:7001"
-    - "11199:7199"
-    - "11042:9042"
-    - "11160:9160"
+    - 7000
+    - 7001
+    - 7199
+    - 9042
+    - 9160
   # volumes: # uncomment if you desire mounts, also uncomment cluster.sh
   #   - ./data/cassandra-2:/var/lib/cassandra:rw
