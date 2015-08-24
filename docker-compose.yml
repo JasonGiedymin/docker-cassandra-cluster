@@ -1,0 +1,37 @@
+# docker-compose Cassandra Test Cluster
+# docker-compose rm
+# docker-compose up
+# docker run -it --link cassandra_cassandra-1_1:cassandra --rm cassandra cqlsh cassandra
+# copy paste the test script on cassandra-1
+# run select on cassandra-2
+#
+
+cassandra-1:
+  hostname: cassandra-1
+  image: cassandra:latest
+  command: /bin/bash -c "sleep 1 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
+  expose:
+    - "10000:7000"
+    - "10001:7001"
+    - "10199:7199"
+    - "10042:9042"
+    - "10160:9160"
+  # volumes: # uncomment if you desire mounts, also uncomment cluster.sh
+  #   - ./data/cassandra-1:/var/lib/cassandra:rw
+
+cassandra-2:
+  hostname: cassandra-2
+  image: cassandra:latest
+  command: /bin/bash -c "sleep 30 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
+  environment:
+    - CASSANDRA_SEEDS=cassandra-1
+  links:
+    - cassandra-1
+  expose:
+    - "11000:7000"
+    - "11001:7001"
+    - "11199:7199"
+    - "11042:9042"
+    - "11160:9160"
+  # volumes: # uncomment if you desire mounts, also uncomment cluster.sh
+  #   - ./data/cassandra-2:/var/lib/cassandra:rw
